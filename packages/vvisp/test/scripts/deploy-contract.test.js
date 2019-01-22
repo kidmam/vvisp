@@ -1,6 +1,6 @@
 const deployContract = require('../../scripts/deploy-contract');
 const path = require('path');
-
+require('dotenv').config();
 describe('# deploy contract process test', function() {
   this.timeout(50000);
   const CONTRACT_PATH = path.join('./contracts', 'libs', 'Ownable.sol');
@@ -19,6 +19,17 @@ describe('# deploy contract process test', function() {
   it('should deploy one contract', async () => {
     await deployContract(CONTRACT_PATH, [], { silent: true }).should.be
       .fulfilled;
+  });
+
+  it('should deploy one contract through private key', async () => {
+    process.env.PRIVATE_KEY =
+      '9741fa712a6912b862c9043f8752ffae513cb01895985998c61620da5aaf2d2d';
+    process.env.MNEMONIC = '';
+    await deployContract(CONTRACT_PATH, [], { silent: true }).should.be
+      .fulfilled;
+    process.env.PRIVATE_KEY = '';
+    process.env.MNEMONIC =
+      'piano garage flag neglect spare title drill basic strong aware enforce fury';
   });
 
   it('should deploy two contract', async () => {
